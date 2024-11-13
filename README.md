@@ -108,14 +108,27 @@ Das einzige was stabil bleibt ist der Code (mit Ausnahme des ersten und letzen W
 
 Auf die Schnelle ist da keine Systematik zu erkennen. Das große Googeln begann: "RfCode berechnen", "433MHz Codec", 
 "Elro Funksteckdosen Codes" und was weiß ich nicht alles. Ehrlich gesagt, so richtig schlau bin ich aus all dem nicht geworden. 
-Das einzige was ich gelertn habe ist, dass die drei Werte Low, High und Sync nicht wirklich relevant sind. Diese drei Werte 
+Das einzige was ich gelertn habe ist, dass die drei Werte *Low, High und Sync nicht wirklich relevant* sind. Diese drei Werte 
 beschreiben das Zeitverhalten zum Senden, bzw. beim Empfang der Codes, also die Puls-Länge bzw. Dauer zum senden einer Eins bzw. Null 
 und des Syncronisations-Signals. (Siehe hier [Github, Tamota Issue 1387](https://github.com/arendst/Tasmota/issues/1387)). 
 
-Wie sich der eigentliche Code berechnet ist dort auch nicht wirklich beschrieben. Auch auf der Seite 
+Wie sich der eigentliche Code berechnet ist dort auch nicht wirklich beschrieben. Auch auf der  
 [FHEM Seite zu Intertechno Funksendern](https://wiki.fhem.de/wiki/Intertechno_Code_Berechnung) ist -für mich- keine klare Beschreibung
-des Codes vorhanden. Aber auf dieser Basis hatte ich einen Ansatz und eine Idee.
+des Codes vorhanden. Aber auf dieser Basis hatte ich den Ansatz zur Berechnung der Codes. Dieser berechnet sich aus dem Binärcode der 
+DIP-Schalter, der "Schalt-Gruppe" (also A,B,C,D oder E, welches es beim Elro-Handsender nicht gibt) und je einem Bit für Ein und Aus. 
+
+```1	2	3	4	5	A	B	C	D	E	On	Off``` 
+
+Bei einem meiner DIP-Schalter sind die Bits 1 und 4 gesetzt. D.h. der "Basis-Code" für diese Funksteckdosen lautet 
+
+```1	0	0	1	0	0	0	0	0	0	0	0``` 
+
+Für Der Taster für A 
 
 Das -ich nenne es mal so- Bescheuerte an der Sache ist, dass der Code nicht einfach aus der Stellung der DIP-Schalter und der Tasten 
 abzulesen, bzw. in einen Binär-Code umzusetzen ist. Der Code "überspringt" jedes zweite Bit!
 
+![grafik](https://github.com/user-attachments/assets/6677726f-6166-4d3e-b567-8780c79c27e5)
+
+
+Damit alleine ist der Code aber noch nicht berechnet. Nachdem 
