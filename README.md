@@ -123,12 +123,30 @@ Bei einem meiner DIP-Schalter sind die Bits 1 und 4 gesetzt. D.h. der "Basis-Cod
 
 ```1	0	0	1	0	0	0	0	0	0	0	0``` 
 
-Für Der Taster für A 
+Wenn nun die Steckdose A eingeschaltet werden soll, wird noch das sechste Bit und das Bit für "On" gesetzt: 
+
+```1	0	0	1	0	1	0	0	0	0	1	0``` 
 
 Das -ich nenne es mal so- Bescheuerte an der Sache ist, dass der Code nicht einfach aus der Stellung der DIP-Schalter und der Tasten 
 abzulesen, bzw. in einen Binär-Code umzusetzen ist. Der Code "überspringt" jedes zweite Bit!
 
 ![grafik](https://github.com/user-attachments/assets/6677726f-6166-4d3e-b567-8780c79c27e5)
 
+Und das nicht alleine! Jedes Bit des o.g. Codes wird erst noch negiert. Somit ergibt sich für meinen Funksender für "Steckdose A an" erstmal
 
-Damit alleine ist der Code aber noch nicht berechnet. Nachdem 
+```0	1	1	0	1	0	1	1	1	1	0	1``` 
+
+und mit den "zwischengeschalteten" Nullen
+
+```00	01	01	00	01	00	01	01	01	01	00	01``` .
+
+Somit lässt sich der RFCode einfach als Hex-Wert des o.g. Binär-Codes ablesen. Für meine "Steckdose A an" lautet der Code somit 1328465. 
+Wie oben schon erwähnt sind Low, High und Sync nur für das zeitliche Verhalten beim Senden der Codes relevant. Diese setze ich somit beim 
+Senden von RFCodes nun auf einen fixen Wert. 
+
+## Berechnung der Codes zum Senden
+
+
+
+
+
