@@ -85,5 +85,37 @@ gekauft. Erstmal ohne die im HA einzubinden, irgendwann dann doch. Nun kam aber 
 dem Sniffen der Codes mal wieder beschäftigen musste. So weit, so gut. Handsender genommen, die Konsole des 
 RF-Sender/Empfängers aufgemacht, Tasten gedrückt und die Codes notiert. 
 
-Das Dumme nur, bei jedem Tastendruck erschienen andere Codes... 
+Das Dumme nur, bei jedem Tastendruck erschienen andere Codes .... WTF!
+
+```
+13:22:27	[I]	[rf_bridge:057]	Received RFBridge Code: sync=0x28BE low=0x0168 high=0x0410 code=0x151454
+13:22:27	[D]	[text_sensor:064]	'Rf Bridge sync': Sending state '10430'
+13:22:27	[D]	[text_sensor:064]	'Rf Bridge low': Sending state '360'
+13:22:28	[D]	[text_sensor:064]	'Rf Bridge high': Sending state '1040'
+13:22:28	[D]	[text_sensor:064]	'Rf Bridge code': Sending state '1381460'
+```
+
+Keine Sorge, ich werde euch hier nicht mit langen Zahlenreihen belästigen!
+
+Low, High, Sync und Code scheinen wahllos zu variieren; nun vielleicht nicht ganz wahllos. Wenn ich eine Taste
+lange drücke ist zumindest der "Code" recht stabil, nur der erste und der letzte Wert, also beim Drücken und beim
+Wiederloslassen, weichen ab. Die anderen drei Werte, Low, High, Sync, schwanken. 
+
+Faszinierend ist auch, das bei jedem weiteren Versuch die drei Werte Low, High und Sync in einem anderen Bereich liegen. 
+Das einzige was stabil bleibt ist der Code (mit Ausnahme des ersten und letzen Wertes). 
+
+## Analyse der Codes
+
+Auf die Schnelle ist da keine Systematik zu erkennen. Das große Googeln begann: "RfCode berechnen", "433MHz Codec", 
+"Elro Funksteckdosen Codes" und was weiß ich nicht alles. Ehrlich gesagt, so richtig schlau bin ich aus all dem nicht geworden. 
+Das einzige was ich gelertn habe ist, dass die drei Werte Low, High und Sync nicht wirklich relevant sind. Diese drei Werte 
+beschreiben das Zeitverhalten zum Senden, bzw. beim Empfang der Codes, also die Puls-Länge bzw. Dauer zum senden einer Eins bzw. Null 
+und des Syncronisations-Signals. (Siehe hier [Github, Tamota Issue 1387](https://github.com/arendst/Tasmota/issues/1387)). 
+
+Wie sich der eigentliche Code berechnet ist dort auch nicht wirklich beschrieben. Auch auf der Seite 
+[FHEM Seite zu Intertechno Funksendern](https://wiki.fhem.de/wiki/Intertechno_Code_Berechnung) ist -für mich- keine klare Beschreibung
+des Codes vorhanden. Aber auf dieser Basis hatte ich einen Ansatz und eine Idee.
+
+Das -ich nenne es mal so- Bescheuerte an der Sache ist, dass der Code nicht einfach aus der Stellung der DIP-Schalter und der Tasten 
+abzulesen, bzw. in einen Binär-Code umzusetzen ist. Der Code "überspringt" jedes zweite Bit!
 
