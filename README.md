@@ -146,6 +146,48 @@ Senden von RFCodes nun auf einen fixen Wert.
 
 ## Berechnung der Codes zum Senden
 
+Für die Berechnung der RFCodes (egal ob empfangen oder zu senden) habe ich mir dann eine Excel-Tabelle zusammengebastelt. Mit der
+kann ich nun einfach für die DIP-Schalter meinen Code eingeben und schematisch die Tasten der Schalt-Gruppen (A-E) und Ein oder Aus einsezten
+und somit den Code berechnen, den ich senden muss. Somit reduziert sich der Aufwand für mich darauf, die Codes in der Aktion 
+```esphome.rf_bridge_send_rf_code``` nutzen. Als Low, High, Sync verwende ich einfach einen Standard (330, 1000, 10290) der sich be mir als
+praktikabel herausgestellt hat. 
+
+Das Tool zur Berechnung des Codes habe ich nun auch als Google-Tabelle umgesetzt, Du findest es
+[hier](https://docs.google.com/spreadsheets/d/1-JK3X-01phvdzJit6nTt2Sel1AQAIu--iug18V1fK_A/edit?usp=sharing).
+Alternativ kannst Du dir Berechnung des Dezimal-Codes über folgendes Python-Skript ermitteln:
+
+```
+#!/usr/bin/env python3
+
+import sys
+
+arg = sys.argv[1] if len(sys.argv) > 1 else None
+if arg is None:
+    raise ValueError("usage: " + __file__ + " [12345][ABDCE][XY]\n where X=on,Y=off")
+
+chars = list(arg.upper())
+val = {char: 1 for char in chars}
+sendcode = 0
+hexcode = 0
+
+for char in "12345ABCDEXY":
+    hexcode <<= 1
+    hexcode += 1 if char in val else 0
+    sendcode <<= 2
+    sendcode += 1 if char not in val else 0
+
+print(f"{hexcode:24b} {sendcode}")
+```
+
+Als Argument einfach die Codes der gesetzten DIP-Schalter übergeben und welche Tastengruppe gedrückt wird (A-E)
+sowie Ein oder Aus. 
+
+```
+~/py > ./sample.py 15AX
+            100011000010 1377617
+```
+
+
 
 
 
