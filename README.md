@@ -180,14 +180,17 @@ print(f"{hexcode:24b} {sendcode}")
 ```
 
 Als Argument einfach die Codes der gesetzten DIP-Schalter übergeben und welche Tastengruppe gedrückt wird (A-E)
-sowie Ein oder Aus. 
+sowie Ein (X) oder Aus (Y). 
 
 ```
 ~/py > ./sample.py 15AX
             100011000010 1377617
 ```
 
+## Schlußbemerkung
 
+Ob man hiermit mehrere Steckdosen gleichzeitig anschalten kann (also z.B. "A und B an") hängt wohl von den
+Geräten ab, bei mir funktioniert es nicht!
 
 
 
